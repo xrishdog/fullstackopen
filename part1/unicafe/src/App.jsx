@@ -16,7 +16,6 @@ const Header = (props) => {
 }
 
 const Result = (props) => {
-  console.log('new button click')
   console.log(props)
   return(
     <div>{props.text} {props.val}</div>
@@ -28,17 +27,31 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const [total, setTotal] = useState(0)
 
   const handleGoodClick = () => {
-    setGood(good+1)
+    const goodUpdated = good +1
+    setGood(goodUpdated)
+    setTotal(goodUpdated+bad+neutral)
   }
   const handleBadClick = () => {
-    setBad(bad+1)
+    const badUpdated = bad +1
+    setBad(badUpdated)
+    setTotal(good + badUpdated + neutral)
   }
   const handleNeutralClick = () => {
-    setNeutral(neutral+1)
+    const neutralUpdated = neutral +1
+    setNeutral(neutralUpdated)
+    setTotal(good + bad + neutralUpdated)
+  }
+  const computeAverage = () => {
+    const score = (good * 1 + neutral * 0 + bad * -1)
+    return (score/total)
   }
 
+  const computePercentPositive = () =>{
+    return (good/total * 100 + "%")
+  }
   return (
     
     <div>
@@ -51,6 +64,9 @@ const App = () => {
       <Result text = 'good' val = {good}/>
       <Result text = 'neutral' val = {neutral}/>
       <Result text = 'bad' val = {bad}/>
+      <Result text = 'total' val = {total}/>
+      <Result text = 'average' val = {computeAverage()}/>
+      <Result text = 'percent positive' val = {computePercentPositive()}/>
     </div>
   )
 }
