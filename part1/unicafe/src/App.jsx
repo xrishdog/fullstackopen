@@ -21,22 +21,33 @@ const Statistics = (props) => {
   const score = (props.good * 1 + props.neutral * 0 + props.bad * -1)
   const avg = score/total
   const percentPositive = props.good/total * 100 + '%'
+
+  if (total === 0){
+    return (
+      <div>No feedback given</div>
+    )
+  }
       
   return(
-    <div>
-      <Result text = 'good' val = {props.good}/>
-      <Result text = 'neutral' val = {props.neutral}/>
-      <Result text = 'bad' val = {props.bad}/>
-      <Result text = 'total' val = {total}/>
-      <Result text = 'average' val = {avg}/>
-      <Result text = 'percent positive' val = {percentPositive}/>
-    </div>
+    <table>
+      <tbody>
+        <StatisticLine text = 'good' val = {props.good}/>
+        <StatisticLine text = 'neutral' val = {props.neutral}/>
+        <StatisticLine text = 'bad' val = {props.bad}/>
+        <StatisticLine text = 'total' val = {total}/>
+        <StatisticLine text = 'average' val = {avg}/>
+        <StatisticLine text = 'percent positive' val = {percentPositive}/>
+      </tbody>
+    </table>
   )
 }
-const Result = (props) => {
+const StatisticLine = (props) => {
   console.log(props)
   return(
-    <div>{props.text} {props.val}</div>
+    <tr>
+      <td>{props.text}</td>
+      <td>{props.val}</td>
+    </tr>
   )
 }
 
