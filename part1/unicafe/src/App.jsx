@@ -15,6 +15,24 @@ const Header = (props) => {
   )
 }
 
+const Statistics = (props) => {
+
+  const total = props.good + props.neutral + props.bad
+  const score = (props.good * 1 + props.neutral * 0 + props.bad * -1)
+  const avg = score/total
+  const percentPositive = props.good/total * 100 + '%'
+      
+  return(
+    <div>
+      <Result text = 'good' val = {props.good}/>
+      <Result text = 'neutral' val = {props.neutral}/>
+      <Result text = 'bad' val = {props.bad}/>
+      <Result text = 'total' val = {total}/>
+      <Result text = 'average' val = {avg}/>
+      <Result text = 'percent positive' val = {percentPositive}/>
+    </div>
+  )
+}
 const Result = (props) => {
   console.log(props)
   return(
@@ -61,12 +79,7 @@ const App = () => {
       <Button handleClick = {handleBadClick} text = 'bad'/>
 
       <Header text = 'Results'/>
-      <Result text = 'good' val = {good}/>
-      <Result text = 'neutral' val = {neutral}/>
-      <Result text = 'bad' val = {bad}/>
-      <Result text = 'total' val = {total}/>
-      <Result text = 'average' val = {computeAverage()}/>
-      <Result text = 'percent positive' val = {computePercentPositive()}/>
+      <Statistics good = {good} neutral = {neutral} bad = {bad}/>
     </div>
   )
 }
