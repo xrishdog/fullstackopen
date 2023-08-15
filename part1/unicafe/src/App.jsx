@@ -73,14 +73,7 @@ const App = () => {
     setNeutral(neutralUpdated)
     setTotal(good + bad + neutralUpdated)
   }
-  const computeAverage = () => {
-    const score = (good * 1 + neutral * 0 + bad * -1)
-    return (score/total)
-  }
 
-  const computePercentPositive = () =>{
-    return (good/total * 100 + "%")
-  }
   return (
     
     <div>
