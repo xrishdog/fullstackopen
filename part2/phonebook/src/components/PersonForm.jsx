@@ -1,5 +1,4 @@
 const PersonForm = ({submitForm, name, phone, onNameChange, onPhoneChange}) =>{
-
     return(
        <form onSubmit = {submitForm}>
         <div>
