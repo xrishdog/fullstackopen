@@ -37,11 +37,22 @@ const App = () => {
       phone: newPhone
     }
 
-    const alreadyExists = 
-      persons.some(person => JSON.stringify(person.name) === JSON.stringify(newName)) 
+    //replacing current information
+    const alreadyExists = persons.some(person => JSON.stringify(person.name) === JSON.stringify(newName)) 
+    
+
     if (alreadyExists) {
-      alert(`${newName} is already added to the phonebook`)
+      const existingIndex = persons.findIndex(person => JSON.stringify(person.name) === JSON.stringify(newName))
+      const id = persons[existingIndex].id
+      
+      if(window.confirm(`${newName} is already added to the phonebook. Replace the old number with a new one?`)){
+        personService.update(id, personObject)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+          })
+      }
     }
+    //add new person
     else{
       personService.create(personObject).
         then(newPerson => {
@@ -52,6 +63,7 @@ const App = () => {
     setNewPhone('')
   }
   
+  //delete information
   const deleteInfo = (id) => {
     const targetPerson = persons.filter(person => person.id === id)
     const targetName = targetPerson[0].name
