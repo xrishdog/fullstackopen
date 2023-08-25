@@ -1,5 +1,6 @@
 import { useState, useEffect} from 'react'
 import axios from 'axios'
+import personService from './services/persons.js'
 
 import Filter from './components/Filter.jsx'
 import PersonForm from './components/PersonForm.jsx'
@@ -14,15 +15,16 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios.get('http://localhost:3001/persons')
-      .then(response => {
+    personService.getAll()
+      .then(intialList => {
         console.log('promise fulfilled')
-        setPersons(response.data)
+        setPersons(intialList)
       })
   }, [])
 
   console.log('render', persons.length, 'persons')
 
+  //filter variable
   const infoToShow = newFilter === '' 
     ? persons
     : persons.filter(person => person.name.toLowerCase().includes(newFilter))
@@ -33,7 +35,7 @@ const App = () => {
     const personObject = {
       name: newName,
       phone: newPhone,
-      id: persons.length
+      id: persons.length + 1
     }
 
     const alreadyExists = 
@@ -42,18 +44,21 @@ const App = () => {
       alert(`${newName} is already added to the phonebook`)
     }
     else{
-      setPersons(persons.concat(personObject))
+      personService.create(personObject).
+        then(newPerson => {
+          setPersons(persons.concat(newPerson))
+        })
     }
     setNewName('')
     setNewPhone('')
   }
 
   const handleNameChange = (event) => {
-    console.log(event.target.value)
+    //console.log(event.target.value)
     setNewName(event.target.value)
   }
   const handlePhoneChange = (event) =>{
-    console.log(event.target.value)
+    //console.log(event.target.value)
     setNewPhone(event.target.value)
   }
   const handleFilterChange = (event) => {
