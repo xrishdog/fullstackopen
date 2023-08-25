@@ -34,8 +34,7 @@ const App = () => {
     event.preventDefault()
     const personObject = {
       name: newName,
-      phone: newPhone,
-      id: persons.length + 1
+      phone: newPhone
     }
 
     const alreadyExists = 
@@ -51,6 +50,17 @@ const App = () => {
     }
     setNewName('')
     setNewPhone('')
+  }
+  
+  const deleteInfo = (id) => {
+    const targetPerson = persons.filter(person => person.id === id)
+    const targetName = targetPerson[0].name
+    
+    if (window.confirm(`Delete ${targetName}?`)){
+      personService.remove(id)
+        .then(setPersons(persons.filter(p => p.id !== id)))
+    }
+    
   }
 
   const handleNameChange = (event) => {
@@ -76,7 +86,7 @@ const App = () => {
         onNameChange = {handleNameChange} onPhoneChange = {handlePhoneChange}/>
 
       <h2>Numbers</h2>
-      <Persons filteredArr={infoToShow} />
+      <Persons filteredArr={infoToShow} handleDelete = {deleteInfo}/>
     </div>
   )
 }
