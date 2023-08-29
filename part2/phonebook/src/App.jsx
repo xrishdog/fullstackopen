@@ -1,10 +1,11 @@
 import { useState, useEffect} from 'react'
-import axios from 'axios'
+
 import personService from './services/persons.js'
 
 import Filter from './components/Filter.jsx'
 import PersonForm from './components/PersonForm.jsx'
 import Persons from './components/Persons.jsx'
+import Notification from './components/Notification.jsx'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -12,6 +13,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState ('')
   const [newFilter, setNewFilter] = useState('')
+  //notifications
+  const [addedMessage, setAddedMessage] = useState(null)
 
   useEffect(() => {
     console.log('effect')
@@ -39,12 +42,11 @@ const App = () => {
 
     //replacing current information
     const alreadyExists = persons.some(person => JSON.stringify(person.name) === JSON.stringify(newName)) 
-    
 
     if (alreadyExists) {
       const existingIndex = persons.findIndex(person => JSON.stringify(person.name) === JSON.stringify(newName))
       const id = persons[existingIndex].id
-      
+
       if(window.confirm(`${newName} is already added to the phonebook. Replace the old number with a new one?`)){
         personService.update(id, personObject)
           .then(returnedPerson => {
@@ -57,7 +59,11 @@ const App = () => {
       personService.create(personObject).
         then(newPerson => {
           setPersons(persons.concat(newPerson))
+
+          setAddedMessage(`Added ${newName}`)
+          setTimeout(() => {setAddedMessage(null)}, 5000)
         })
+      
     }
     setNewName('')
     setNewPhone('')
@@ -90,7 +96,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Notification message = {addedMessage}/>
       <Filter filter = {newFilter} onChange = {handleFilterChange}/>
 
       <h2>add a new</h2>
