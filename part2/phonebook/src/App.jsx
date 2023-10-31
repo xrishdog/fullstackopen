@@ -23,6 +23,10 @@ const App = () => {
         console.log('promise fulfilled')
         setPersons(intialList)
       })
+      .catch(error => {
+        console.log(error)
+        console.log('promise failed')
+      })
   }, [])
 
   console.log('render', persons.length, 'persons')
@@ -95,6 +99,7 @@ const App = () => {
   }
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value)
+    //console.log(event.target.value)
   }
 
   return (
